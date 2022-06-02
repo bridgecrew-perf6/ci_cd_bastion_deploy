@@ -1,0 +1,1 @@
+aws cloudformation update-stack --stack-name test-stack-1 --template-url https://episyche-ems-assets.s3.ap-south-1.amazonaws.com/ec2_template.yaml --parameters ParameterKey=KeyName,ParameterValue=dataload_appsync
