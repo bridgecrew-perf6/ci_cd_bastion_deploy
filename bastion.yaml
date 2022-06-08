@@ -120,8 +120,6 @@ Resources:
       MinSize: "1"
       DesiredCapacity: "1"
       MaxSize: "1"
-      TargetGroupARNs:
-        - !GetAtt [ NetworkLoadBalancerTargetGroup, Arn ]
       Tags:
         -
           Key: Name
