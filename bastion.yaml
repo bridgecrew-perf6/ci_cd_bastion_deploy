@@ -138,7 +138,7 @@ Resources:
         - !Ref Subnet2
       Type: network
       
-   NetworkLoadBalancerListener:
+  NetworkLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       DefaultActions:
