@@ -120,11 +120,40 @@ Resources:
       MinSize: "1"
       DesiredCapacity: "1"
       MaxSize: "1"
+      TargetGroupARNs:
+        - !GetAtt [ NetworkLoadBalancerTargetGroup, Arn ]
       Tags:
         -
           Key: Name
           Value: !Join ["", [!Ref "AWS::StackName", "BastionHost"]]
           PropagateAtLaunch: true
+          
+  NetworkLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Join ["-" , [!Ref 'AWS::StackName', NLB]]
+      Scheme: internal
+      Subnets:
+        - !Ref SubnetId1
+        - !Ref SubnetId2
+      Type: network
+      
+  NetworkLoadBalancerTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Join ["-" , [!Ref 'AWS::StackName', Target]]
+      Port: 389
+      Protocol: TCP
+      VpcId: !Ref VpcId
+      HealthCheckEnabled: True
+      HealthCheckIntervalSeconds: 10
+      HealthCheckPort: 389
+      HealthCheckProtocol: TCP
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 3
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 60
 
   BastionLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
