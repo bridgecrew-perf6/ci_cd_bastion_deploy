@@ -125,6 +125,8 @@ Resources:
           Key: Name
           Value: !Join ["", [!Ref "AWS::StackName", "BastionHost"]]
           PropagateAtLaunch: true
+      TargetGroupARNs:
+        - !Ref NetworkLoadBalancerTargetGroup
           
   NetworkLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -136,16 +138,26 @@ Resources:
         - !Ref Subnet2
       Type: network
       
+   NetworkLoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref NetworkLoadBalancerTargetGroup
+      LoadBalancerArn: !Ref NetworkLoadBalancer
+      Port: 22
+      Protocol: TCP
+      
   NetworkLoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       Name: !Join ["-" , [!Ref 'AWS::StackName', Target]]
-      Port: 389
+      Port: 22
       Protocol: TCP
       VpcId: !Ref VpcId
       HealthCheckEnabled: True
       HealthCheckIntervalSeconds: 10
-      HealthCheckPort: 389
+      HealthCheckPort: 22
       HealthCheckProtocol: TCP
       HealthCheckTimeoutSeconds: 10
       HealthyThresholdCount: 3
