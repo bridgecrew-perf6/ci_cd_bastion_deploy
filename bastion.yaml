@@ -134,8 +134,8 @@ Resources:
       Name: !Join ["-" , [!Ref 'AWS::StackName', NLB]]
       Scheme: internal
       Subnets:
-        - !Ref SubnetId1
-        - !Ref SubnetId2
+        - !Ref Subnet1
+        - !Ref Subnet2
       Type: network
       
   NetworkLoadBalancerTargetGroup:
